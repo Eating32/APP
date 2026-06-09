@@ -1,0 +1,10 @@
+*.pptx
+~$*
+*.jpg
+!images/*.jpg
+image.png
+change.txt
+change_1.txt
+初版.jpg
+网球logo.jpg
+.DS_Store
