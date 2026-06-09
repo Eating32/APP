@@ -1,0 +1,40 @@
+<!-- 设备信息卡片 — 统一白色容器 -->
+<view class="device-card glass-card">
+  <!-- 左侧：机器人图片 -->
+  <view class="device-image-wrap">
+    <image class="device-image"
+           src="/images/robot.png" mode="aspectFit"
+           bindload="onImageLoad" binderror="onImageError" />
+    <view class="image-placeholder" wx:if="{{!imageLoaded}}">
+      <text class="placeholder-text">ELF</text>
+    </view>
+  </view>
+
+  <!-- 右侧：设备名称 + 三个信息卡片 -->
+  <view class="device-info">
+    <text class="device-name">{{deviceName}}</text>
+    <text class="device-model">{{deviceModel}}</text>
+
+    <!-- 两个横向信息卡片：电量 / 已用时长 -->
+    <view class="info-cards">
+      <!-- 电量 — 环形进度 -->
+      <view class="info-card">
+        <view class="battery-ring">
+          <view class="ring-track">
+            <view class="ring-fill" style="background: conic-gradient(#25C06D {{battery * 3.6}}deg, #E8ECF4 {{battery * 3.6}}deg);"></view>
+            <view class="ring-center">
+              <text class="ring-value">{{battery}}%</text>
+            </view>
+          </view>
+        </view>
+        <text class="info-card-label">电量</text>
+      </view>
+
+      <!-- 已用时长 -->
+      <view class="info-card">
+        <text class="info-card-value">{{usageTime}}</text>
+        <text class="info-card-label">已用时长</text>
+      </view>
+    </view>
+  </view>
+</view>

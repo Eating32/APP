@@ -1,0 +1,50 @@
+/**
+ * Apple 风格分段选择器
+ */
+
+.segment-control {
+  width: 100%;
+}
+
+.segment-track {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  height: 56rpx;
+  border-radius: 999rpx;
+  background: #EDF1F8;
+  overflow: hidden;
+}
+
+/* 选中指示器滑块 */
+.segment-indicator {
+  position: absolute;
+  top: 4rpx;
+  bottom: 4rpx;
+  background: var(--brand-blue, #3D7BFF);
+  border-radius: 999rpx;
+  transition: left 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: 0;
+}
+
+/* 选项 */
+.segment-item {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  transition: color 0.2s ease;
+}
+
+.segment-text {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--text-secondary, #8293B5);
+  transition: color 0.2s ease;
+}
+
+.segment-active .segment-text {
+  color: #FFFFFF;
+  font-weight: 700;
+}
