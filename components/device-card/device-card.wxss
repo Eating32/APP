@@ -1,0 +1,88 @@
+/**
+ * 设备信息卡片 — 统一白色容器
+ */
+.device-card {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 24rpx;
+  overflow: visible;
+}
+
+/* --- 左侧机器人图片 --- */
+.device-image-wrap {
+  width: 260rpx;
+  height: 300rpx;
+  flex-shrink: 0;
+  margin-right: 20rpx;
+  position: relative;
+  z-index: 1;
+  border-radius: 20rpx;
+  overflow: hidden;
+  filter: drop-shadow(0 8rpx 20rpx rgba(31, 60, 117, 0.12));
+}
+.device-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 20rpx;
+}
+.image-placeholder {
+  width: 100%; height: 100%;
+  display: flex; justify-content: center; align-items: center;
+  background: linear-gradient(145deg, #EAF2FF, #D6E4FF);
+}
+.placeholder-text { font-size: 36rpx; font-weight: 700; color: #3D7BFF; opacity: 0.3; }
+
+/* --- 右侧设备信息 --- */
+.device-info {
+  flex: 1;
+  display: flex; flex-direction: column; min-width: 0;
+}
+.device-name {
+  font-size: 36rpx; font-weight: 700; color: #25C06D; margin-bottom: 4rpx;
+  font-family: "Microsoft YaHei", sans-serif;
+}
+.device-model {
+  font-size: 24rpx; color: #7F90AF; margin-bottom: 20rpx;
+  font-family: "Microsoft YaHei", sans-serif;
+}
+
+/* --- 三个横向信息卡片 --- */
+.info-cards {
+  display: flex; flex-direction: row; gap: 12rpx;
+}
+.info-card {
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; padding: 12rpx 4rpx;
+  border-radius: 16rpx;
+  background: rgba(245, 248, 255, 0.8);
+  border: 1px solid #E6ECF7;
+}
+.info-card-value {
+  font-size: 24rpx; font-weight: 700; color: #1F3C75; margin-bottom: 4rpx;
+  font-family: "Microsoft YaHei", sans-serif;
+}
+.info-card-label {
+  font-size: 18rpx; font-weight: 500; color: #8293B5;
+  font-family: "Microsoft YaHei", sans-serif;
+}
+
+/* --- 电量环形进度 --- */
+.battery-ring { display: flex; justify-content: center; align-items: center; margin-bottom: 4rpx; }
+.ring-track {
+  position: relative; width: 56rpx; height: 56rpx; border-radius: 50%;
+  background: #E8ECF4;
+}
+.ring-fill {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: 50%;
+  mask: radial-gradient(transparent 21rpx, black 21rpx);
+  -webkit-mask: radial-gradient(transparent 21rpx, black 21rpx);
+}
+.ring-center {
+  position: absolute; top: 5rpx; left: 5rpx; right: 5rpx; bottom: 5rpx;
+  border-radius: 50%; background: #fff;
+  display: flex; justify-content: center; align-items: center; z-index: 1;
+}
+.ring-value { font-size: 20rpx; font-weight: 700; color: #1F3C75; }

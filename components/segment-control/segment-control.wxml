@@ -1,0 +1,17 @@
+<!-- Apple 风格分段选择器 -->
+<view class="segment-control">
+  <view class="segment-track">
+    <!-- 选中滑块 -->
+    <view class="segment-indicator"
+          style="width: {{100 / items.length}}%; left: {{activeIndex * (100 / items.length)}}%;"></view>
+    <!-- 选项 -->
+    <view
+      wx:for="{{items}}"
+      wx:key="index"
+      class="segment-item {{activeIndex === index ? 'segment-active' : ''}}"
+      data-index="{{index}}"
+      bindtap="onSelect">
+      <text class="segment-text">{{item}}</text>
+    </view>
+  </view>
+</view>

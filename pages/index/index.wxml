@@ -1,0 +1,137 @@
+<!--
+  Y-Evolution 网球机器人控制小程序
+  主页面 · 高端智能硬件控制中心
+-->
+<view class="page-container">
+  <!-- ==========================================
+       1. Header（右上角为小程序原生胶囊按钮）
+       ========================================== -->
+  <view class="header">
+    <view class="header-left">
+      <text class="header-title">Y-Evolution</text>
+      <text class="header-subtitle">智能控制，轻松训练</text>
+    </view>
+  </view>
+
+  <!-- ==========================================
+       2. 设备信息卡片
+       ========================================== -->
+  <view class="device-card-wrapper" style="margin-bottom: 16rpx;">
+    <device-card
+      deviceName="{{deviceName}}"
+      deviceModel="{{deviceModel}}"
+      battery="{{battery}}"
+      usageTime="{{usageTime}}"
+    />
+  </view>
+
+  <!-- ==========================================
+       3. 当前状态卡片
+       ========================================== -->
+  <view class="status-card glass-card" style="margin-bottom: 16rpx;">
+    <text class="status-label">当前状态</text>
+    <view class="status-pill status-pill-{{statusType}}">
+      <text class="status-pill-text">{{statusPillText}}</text>
+    </view>
+    <text class="status-desc">设备运动状态</text>
+  </view>
+
+  <!-- ==========================================
+       4. 主功能区 (双列 58% : 42%)
+       ========================================== -->
+  <view class="main-area" style="margin-bottom: 16rpx;">
+    <!-- ========== 左列 58%：移动控制 ========== -->
+    <view class="left-column glass-card">
+      <view class="column-header">
+        <text class="column-title">移动控制</text>
+        <text class="column-subtitle">控制小车移动方向</text>
+      </view>
+      <segment-control
+        items="{{controlModes}}"
+        activeIndex="{{controlModeIndex}}"
+        bind:change="onControlModeChange"
+        custom-class="segment-wrap"
+      />
+      <view class="joystick-area">
+        <joystick
+          size="{{320}}"
+          disabled="{{!isPowered || controlModeIndex !== 0}}"
+          bind:direction="onJoystickDirection"
+        />
+      </view>
+    </view>
+
+    <!-- ========== 右列 42%：收球 + 发球 ========== -->
+    <view class="right-column">
+      <!-- 收球功能 -->
+      <view class="glass-card func-section func-section-collect">
+        <view class="column-header">
+          <text class="column-title">收球功能</text>
+          <text class="column-subtitle">自动回收场地网球</text>
+        </view>
+        <view class="btn-primary func-btn {{isCollecting ? 'btn-active-state' : ''}}"
+              bindtap="onCollectToggle"
+              hover-class="btn-primary-press">
+          <text>{{isCollecting ? '关闭收球' : '开启收球'}}</text>
+        </view>
+      </view>
+
+      <!-- 发球功能 -->
+      <view class="glass-card func-section func-section-serve">
+        <view class="column-header">
+          <text class="column-title">发球功能</text>
+          <text class="column-subtitle">选择发球模式与强度</text>
+        </view>
+        <segment-control
+          items="{{serveModes}}"
+          activeIndex="{{serveModeIndex}}"
+          bind:change="onServeModeChange"
+          custom-class="segment-wrap"
+        />
+        <view class="speed-row">
+          <view
+            wx:for="{{serveSpeeds}}"
+            wx:key="index"
+            class="speed-btn {{serveSpeedIndex === index ? 'speed-active' : ''}}"
+            data-index="{{index}}"
+            bindtap="onSpeedChange">
+            <text class="speed-btn-text">{{item}}</text>
+          </view>
+        </view>
+        <view class="btn-primary func-btn-serve {{isServing ? 'btn-active-state' : ''}}"
+              bindtap="onServeToggle"
+              hover-class="btn-primary-press">
+          <text>{{isServing ? '停止发球' : '开始发球'}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ==========================================
+       5. 总关闭模块
+       ========================================== -->
+  <view class="shutdown-card glass-card" style="margin-bottom: 16rpx;">
+    <view class="shutdown-info">
+      <text class="shutdown-title">关闭发球和收球功能</text>
+      <text class="shutdown-subtitle">关闭后将停止发球和收球功能</text>
+    </view>
+    <switch
+      class="shutdown-switch"
+      checked="{{isShutdown}}"
+      bindchange="onShutdownToggle"
+      color="#3D7BFF"
+    />
+  </view>
+
+  <!-- 底部留白 -->
+  <view class="bottom-spacer"></view>
+
+  <!-- ==========================================
+       6. 底部导航栏
+       ========================================== -->
+  <bottom-nav
+    items="{{navItems}}"
+    activeKey="{{activeNav}}"
+    bind:change="onNavChange"
+  />
+</view>

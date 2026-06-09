@@ -1,0 +1,121 @@
+/**
+ * Y-Evolution 网球机器人控制小程序
+ * 全局样式 & 设计系统
+ */
+
+/* ========================================
+   CSS 自定义属性
+   ======================================== */
+page {
+  --brand-blue: #3D7BFF;
+  --deep-blue: #234A95;
+  --light-blue: #EAF2FF;
+  --status-green: #25C06D;
+  --status-purple: #7C3AED;
+  --status-orange: #F59E0B;
+  --bg-white: #FFFFFF;
+  --text-primary: #1F3C75;
+  --text-secondary: #8293B5;
+  --text-subtitle: #7F90AF;
+  --nav-inactive: #A0AEC8;
+
+  /* 状态色 */
+  --idle-bg: #E9F9EF;
+  --idle-text: #25C06D;
+  --moving-bg: #EAF2FF;
+  --moving-text: #3D7BFF;
+  --collect-bg: #F3EFFF;
+  --collect-text: #7C3AED;
+  --serve-bg: #FFF4E6;
+  --serve-text: #F59E0B;
+
+  /* 玻璃拟态卡片 */
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-blur: blur(30px);
+  --glass-shadow: 0 12rpx 40rpx rgba(40, 90, 255, 0.08);
+  --glass-highlight: 1rpx solid rgba(255, 255, 255, 0.7);
+
+  /* 渐变 */
+  --blue-gradient: linear-gradient(135deg, #4A8CFF, #2F66FF);
+  --blue-gradient-glow: linear-gradient(135deg, #5A9CFF, #3F76FF);
+
+  /* 尺寸 */
+  --card-radius: 32rpx;
+  --pill-radius: 999rpx;
+
+  /* 字体 */
+  font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+  font-weight: 600;
+
+  /* 背景：渐变 + 超淡科技网格(0.02) + 氛围光 */
+  background-color: #F4F8FF;
+  background-image:
+    /* 科技网格 —— 极淡，不抢视觉 */
+    repeating-linear-gradient(
+      0deg,
+      rgba(61, 123, 255, 0.02) 0rpx,
+      rgba(61, 123, 255, 0.02) 1rpx,
+      transparent 1rpx,
+      transparent 48rpx
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(61, 123, 255, 0.02) 0rpx,
+      rgba(61, 123, 255, 0.02) 1rpx,
+      transparent 1rpx,
+      transparent 48rpx
+    ),
+    radial-gradient(
+      ellipse 80% 50% at 50% 0%,
+      rgba(61, 123, 255, 0.06) 0%,
+      transparent 70%
+    ),
+    linear-gradient(180deg, #F4F8FF 0%, #EEF3FB 100%);
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* ========================================
+   通用玻璃拟态卡片
+   ======================================== */
+.glass-card {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 24rpx;
+  border: 1px solid #E6ECF7;
+  box-shadow:
+    0 6px 24px rgba(60, 100, 200, 0.08),
+    0 2px 6px rgba(60, 100, 200, 0.04);
+  box-sizing: border-box;
+}
+
+/* 通用蓝色渐变按钮 */
+.btn-primary {
+  height: 72rpx;
+  border-radius: 999rpx;
+  background: linear-gradient(135deg, #4A8CFF, #2F66FF);
+  color: #ffffff;
+  font-size: 28rpx;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow:
+    0 8rpx 24rpx rgba(47, 102, 255, 0.30),
+    0 0 0 1rpx rgba(255, 255, 255, 0.3) inset;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-primary:active {
+  transform: scale(0.97);
+  box-shadow:
+    0 4rpx 12rpx rgba(47, 102, 255, 0.35),
+    0 0 0 1rpx rgba(255, 255, 255, 0.4) inset;
+}
+
+/* 模块间距 */
+.module-spacing {
+  margin-bottom: 16rpx;
+  overflow: visible;
+}

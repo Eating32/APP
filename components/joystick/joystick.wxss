@@ -1,0 +1,143 @@
+/**
+ * 圆形虚拟方向摇杆
+ * 多层同心圆 + 三角箭头 + 中心圆球
+ */
+
+.joystick-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;         /* 新增：撑满卡片宽度 */
+  height: 360rpx;       /* 新增：高度放大，和图片一致 */
+  margin: 0 auto;
+}
+
+/* ========================================
+   外层：多层同心圆
+   ======================================== */
+.joy-outer {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 40%,
+    rgba(255,255,255,0.8) 0%,
+    rgba(234,241,255,0.4) 60%,
+    rgba(220,230,250,0.25) 100%);
+  box-shadow:
+    inset 0 3rpx 10rpx rgba(255,255,255,0.7),
+    0 6rpx 24rpx rgba(50,90,255,0.08);
+  border: 1rpx solid rgba(200,215,240,0.5);
+}
+
+.joy-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1rpx solid;
+  pointer-events: none;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+.r1 { width: 88%; height: 88%; border-color: rgba(61,123,255,0.07); }
+.r2 { width: 72%; height: 72%; border-color: rgba(61,123,255,0.10); }
+.r3 { width: 56%; height: 56%; border-color: rgba(61,123,255,0.14); }
+.r4 { width: 42%; height: 42%; border-color: rgba(61,123,255,0.18); }
+
+/* ========================================
+   中层：方向三角箭头（靠内、大小适中、和图片一致）
+   ======================================== */
+.joy-arrows {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.joy-tri {
+  position: absolute;
+  width: 0; height: 0;
+}
+
+/* 上箭头 */
+.joy-tri-up {
+  top: 12%; left: 50%; transform: translateX(-50%);
+  border-left: 16rpx solid transparent;
+  border-right: 16rpx solid transparent;
+  border-bottom: 22rpx solid rgba(61,123,255,0.28);
+}
+
+/* 下箭头 */
+.joy-tri-down {
+  bottom: 12%; left: 50%; transform: translateX(-50%);
+  border-left: 16rpx solid transparent;
+  border-right: 16rpx solid transparent;
+  border-top: 22rpx solid rgba(61,123,255,0.28);
+}
+
+/* 左箭头 */
+.joy-tri-left {
+  left: 12%; top: 50%; transform: translateY(-50%);
+  border-top: 16rpx solid transparent;
+  border-bottom: 16rpx solid transparent;
+  border-right: 22rpx solid rgba(61,123,255,0.28);
+}
+
+/* 右箭头 */
+.joy-tri-right {
+  right: 12%; top: 50%; transform: translateY(-50%);
+  border-top: 16rpx solid transparent;
+  border-bottom: 16rpx solid transparent;
+  border-left: 22rpx solid rgba(61,123,255,0.28);
+}
+
+/* ========================================
+   内层：中心圆形摇杆（大小和图片一致）
+   ======================================== */
+.joy-knob-wrap {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex; justify-content: center; align-items: center;
+  z-index: 10; pointer-events: none;
+}
+
+.joy-knob {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  position: relative;
+  pointer-events: auto;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background: radial-gradient(circle at 38% 32%,
+    rgba(255,255,255,0.95) 0%,
+    rgba(220,238,255,0.75) 35%,
+    rgba(180,210,245,0.55) 70%,
+    rgba(150,195,240,0.45) 100%);
+  box-shadow:
+    0 4rpx 16rpx rgba(61,123,255,0.18),
+    0 0 0 1rpx rgba(255,255,255,0.6) inset,
+    inset 0 -2rpx 6rpx rgba(30,60,120,0.05);
+  border-top: 1rpx solid rgba(255,255,255,0.85);
+}
+.joy-knob:active { cursor: grabbing; }
+
+.knob-active {
+  transition: none;
+  background: radial-gradient(circle at 38% 32%,
+    rgba(255,255,255,1) 0%,
+    rgba(220,238,255,0.85) 35%,
+    rgba(180,210,245,0.65) 70%,
+    rgba(150,195,240,0.55) 100%);
+  box-shadow:
+    0 6rpx 20rpx rgba(61,123,255,0.25),
+    0 0 0 1rpx rgba(255,255,255,0.7) inset;
+}
+
+.knob-spark {
+  position: absolute;
+  top: 22%; left: 28%;
+  width: 14rpx; height: 14rpx;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.8);
+  filter: blur(2rpx);
+}

@@ -1,0 +1,50 @@
+<!--
+  磨砂玻璃底部导航 · iOS Dock 风格
+  带线性图标
+-->
+<view class="bottom-nav">
+  <view class="nav-highlight"></view>
+  <view class="nav-bg"></view>
+  <view class="nav-content">
+    <view
+      wx:for="{{items}}"
+      wx:key="key"
+      class="nav-item {{activeKey === item.key ? 'nav-active' : ''}}"
+      data-key="{{item.key}}"
+      bindtap="onNavTap">
+
+      <!-- 线性图标 (CSS 绘制) -->
+      <view class="nav-icon">
+        <!-- 控制图标：靶心 -->
+        <block wx:if="{{item.key === 'control'}}">
+          <view class="icon-circle">
+            <view class="icon-dot"></view>
+          </view>
+        </block>
+        <!-- 状态图标：三条柱状 -->
+        <block wx:elif="{{item.key === 'status'}}">
+          <view class="icon-bars">
+            <view class="icon-bar bar-1"></view>
+            <view class="icon-bar bar-2"></view>
+            <view class="icon-bar bar-3"></view>
+          </view>
+        </block>
+        <!-- 设置图标：齿轮 -->
+        <block wx:elif="{{item.key === 'settings'}}">
+          <view class="icon-gear">
+            <view class="icon-gear-inner"></view>
+          </view>
+        </block>
+        <!-- 我的图标：人物 -->
+        <block wx:elif="{{item.key === 'profile'}}">
+          <view class="icon-person">
+            <view class="icon-head"></view>
+            <view class="icon-body"></view>
+          </view>
+        </block>
+      </view>
+
+      <text class="nav-label">{{item.label}}</text>
+    </view>
+  </view>
+</view>

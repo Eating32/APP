@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "device-card": "/components/device-card/device-card",
+    "segment-control": "/components/segment-control/segment-control",
+    "bottom-nav": "/components/bottom-nav/bottom-nav",
+    "joystick": "/components/joystick/joystick"
+  },
+  "navigationStyle": "custom"
+}

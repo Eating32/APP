@@ -1,0 +1,29 @@
+<!-- 圆形虚拟方向摇杆 — 同心圆 + 三角箭头 -->
+<view class="joystick-wrap" style="width: {{size}}rpx; height: {{size}}rpx;">
+  <!-- 外层：多层同心圆 -->
+  <view class="joy-outer">
+    <view class="joy-ring r1"></view>
+    <view class="joy-ring r2"></view>
+    <view class="joy-ring r3"></view>
+    <view class="joy-ring r4"></view>
+  </view>
+
+  <!-- 中层：四个方向三角箭头（无方形背景） -->
+  <view class="joy-arrows">
+    <view class="joy-tri joy-tri-up"></view>
+    <view class="joy-tri joy-tri-down"></view>
+    <view class="joy-tri joy-tri-left"></view>
+    <view class="joy-tri joy-tri-right"></view>
+  </view>
+
+  <!-- 内层：中心可拖动圆形摇杆 -->
+  <view class="joy-knob-wrap">
+    <view class="joy-knob {{dragging ? 'knob-active' : ''}}"
+          style="transform: translate({{knobX}}rpx, {{knobY}}rpx);"
+          bindtouchstart="onTouchStart"
+          bindtouchmove="onTouchMove"
+          bindtouchend="onTouchEnd">
+      <view class="knob-spark"></view>
+    </view>
+  </view>
+</view>

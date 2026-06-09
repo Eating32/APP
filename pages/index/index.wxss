@@ -1,0 +1,182 @@
+/**
+ * Y-Evolution 主页面 — change_1.txt 严格规格
+ */
+
+/* ========================================
+   页面容器
+   ======================================== */
+.page-container {
+  padding: 0 20rpx;
+  padding-top: calc(88rpx + env(safe-area-inset-top));
+  min-height: 100vh;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+/* ========================================
+   1. Header
+   ======================================== */
+.header {
+  height: 120rpx;
+  display: flex; flex-direction: row; justify-content: flex-start;
+  align-items: flex-start; padding: 0 8rpx; padding-top: 4rpx;
+}
+.header-left { display: flex; flex-direction: column; }
+.header-title {
+  font-size: 72rpx; font-weight: 700; color: #234A95;
+  line-height: 1; letter-spacing: -1rpx;
+  font-family: "Microsoft YaHei", sans-serif;
+}
+.header-subtitle {
+  font-size: 24rpx; color: #7F90AF; margin-top: 8rpx;
+  font-family: "Microsoft YaHei", sans-serif;
+}
+
+/* ========================================
+   2. 设备卡片（高度 260rpx，由组件控制）
+   ======================================== */
+.device-card-wrapper { overflow: visible; margin-top: 8rpx; }
+
+/* ========================================
+   3. 当前状态卡片（~120rpx）
+   ======================================== */
+.status-card {
+  width: 100%;
+  display: flex; flex-direction: row; align-items: center; justify-content: space-between;
+  padding: 28rpx 28rpx;
+}
+.status-label {
+  font-size: 24rpx; font-weight: 700; color: #1F3C75;
+  font-family: "Microsoft YaHei", sans-serif;
+}
+.status-pill { padding: 8rpx 24rpx; border-radius: 40rpx; }
+.status-pill-text { font-size: 24rpx; font-weight: 700; font-family: "Microsoft YaHei", sans-serif; }
+.status-desc {
+  font-size: 22rpx; color: #8293B5; font-weight: 500;
+  font-family: "Microsoft YaHei", sans-serif;
+}
+.status-pill-idle { background: #E9F9EF; }
+.status-pill-idle .status-pill-text { color: #25C06D; }
+.status-pill-moving { background: #EAF2FF; }
+.status-pill-moving .status-pill-text { color: #3D7BFF; }
+.status-pill-collecting { background: #F3EFFF; }
+.status-pill-collecting .status-pill-text { color: #7C3AED; }
+.status-pill-serving { background: #FFF4E6; }
+.status-pill-serving .status-pill-text { color: #F59E0B; }
+.status-pill-shutdown { background: #F1F3F5; }
+.status-pill-shutdown .status-pill-text { color: #8293B5; }
+
+/* ========================================
+   4. 主功能区：左右双栏 58% : 42%
+   ======================================== */
+.main-area { display: flex; flex-direction: row; gap: 16rpx; }
+
+/* --- 左列 58%：移动控制 ~420rpx --- */
+.left-column {
+  width: 58%;
+  display: flex; flex-direction: column;
+  padding: 24rpx 20rpx;
+  flex: 1;
+}
+.right-column {
+  width: 42%;
+  display: flex; flex-direction: column; gap: 12rpx;
+}
+.right-column > .glass-card { flex: 1; }
+
+.column-header { display: flex; flex-direction: column; margin-bottom: 8rpx; }
+.column-title {
+  font-size: 28rpx; font-weight: 700; color: #1F3C75; margin-bottom: 4rpx;
+  font-family: "Microsoft YaHei", sans-serif;
+}
+.column-subtitle {
+  font-size: 22rpx; color: #8293B5; font-weight: 500;
+  font-family: "Microsoft YaHei", sans-serif;
+}
+.segment-wrap { margin-bottom: 10rpx; }
+
+/* 摇杆区域 */
+.joystick-area {
+  flex: 1;
+  display: flex; justify-content: center; align-items: center;
+  padding: 0;
+}
+
+/* --- 收球功能 --- */
+.func-section-collect {
+  display: flex; flex-direction: column;
+  padding: 24rpx;
+}
+.func-section-collect .column-header { margin-bottom: 16rpx; }
+
+/* --- 发球功能 --- */
+.func-section-serve {
+  display: flex; flex-direction: column;
+  padding: 24rpx;
+}
+.func-section-serve .column-header { margin-bottom: 8rpx; }
+.func-section-serve .segment-wrap { margin-bottom: 10rpx; }
+
+/* 统一主按钮 */
+.func-btn, .func-btn-serve {
+  width: 100%;
+  height: 64rpx;
+  margin-top: 0;
+  border-radius: 999rpx;
+  background: linear-gradient(135deg, #4A8CFF, #2F66FF);
+  box-shadow:
+    0 6rpx 18rpx rgba(47, 102, 255, 0.25),
+    0 0 0 1rpx rgba(255, 255, 255, 0.3) inset;
+  display: flex; justify-content: center; align-items: center;
+}
+.func-btn text, .func-btn-serve text {
+  font-size: 28rpx; font-weight: 600; color: #fff;
+  font-family: "Microsoft YaHei", sans-serif;
+}
+.btn-active-state {
+  background: linear-gradient(135deg, #25C06D, #1EA85A) !important;
+  box-shadow: 0 6rpx 18rpx rgba(37, 192, 109, 0.25),
+              0 0 0 1rpx rgba(255, 255, 255, 0.3) inset !important;
+}
+.btn-primary-press { transform: scale(0.97); }
+
+/* 档位 */
+.speed-row { display: flex; flex-direction: row; gap: 10rpx; margin: 10rpx 0; }
+.speed-btn {
+  flex: 1; height: 54rpx; border-radius: 999rpx;
+  background: #EDF1F6;
+  display: flex; justify-content: center; align-items: center;
+}
+.speed-btn-text {
+  font-size: 24rpx; font-weight: 600; color: #8293B5;
+  font-family: "Microsoft YaHei", sans-serif;
+}
+.speed-active {
+  background: linear-gradient(135deg, #4A8CFF, #2F66FF);
+  box-shadow: 0 4rpx 12rpx rgba(47,102,255,0.2);
+}
+.speed-active .speed-btn-text { color: #fff; font-weight: 700; }
+
+/* ========================================
+   5. 总关闭模块
+   ======================================== */
+.shutdown-card {
+  width: 100%;
+  display: flex; flex-direction: row; align-items: center;
+  justify-content: space-between; padding: 24rpx 28rpx;
+}
+.shutdown-info { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.shutdown-title {
+  font-size: 28rpx; font-weight: 700; color: #1F3C75; margin-bottom: 4rpx;
+  font-family: "Microsoft YaHei", sans-serif;
+}
+.shutdown-subtitle {
+  font-size: 22rpx; color: #8293B5; font-weight: 500;
+  font-family: "Microsoft YaHei", sans-serif;
+}
+.shutdown-switch { flex-shrink: 0; margin-left: 16rpx; }
+
+/* ========================================
+   紧凑底部
+   ======================================== */
+.bottom-spacer { height: 60rpx; }
