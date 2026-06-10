@@ -2,7 +2,8 @@
  * Y-Evolution 主页面逻辑
  */
 const app = getApp();
-const { NavItems } = require('../../utils/constants');
+const { NavItems, BLECommands } = require('../../utils/constants');
+const { BLEState, bleManager } = require('../../utils/ble');
 
 Page({
   data: {
@@ -22,7 +23,7 @@ Page({
     statusText: '待机中',
 
     // 状态胶囊
-    statusType: 'idle',       // idle | moving | collecting | serving | shutdown
+    statusType: 'idle',
     statusPillText: '待机中',
     statusDescription: '等待控制指令',
 
@@ -42,7 +43,11 @@ Page({
 
     // 总开关
     isShutdown: false,
-    isPowered: true, // 默认开机
+    isPowered: true,
+
+    // 蓝牙状态
+    bleState: BLEState.IDLE,
+    bleDeviceName: '',
   },
 
   onLoad() {
@@ -58,10 +63,12 @@ Page({
     this._refreshStatus();
     this._updateTime();
     this._fetchPhoneBattery();
+
+    // 初始化蓝牙
+    this._initBLE();
   },
 
   onShow() {
-    // 每次回到页面刷新时间
     this._updateTime();
     this._fetchPhoneBattery();
   },
@@ -72,6 +79,7 @@ Page({
 
   onUnload() {
     this._clearTimer();
+    bleManager.close();
   },
 
   // ==================== 系统状态栏 ====================
@@ -82,7 +90,6 @@ Page({
     const timeStr = `${h}:${m.toString().padStart(2, '0')}`;
     this.setData({ currentTime: timeStr });
     this._clearTimer();
-    // 每分钟更新一次
     this._timeTimer = setInterval(() => {
       const n = new Date();
       const nh = n.getHours();
@@ -104,12 +111,108 @@ Page({
         success: (res) => {
           this.setData({ phoneBattery: res.level });
         },
-        fail: () => {
-          // 获取失败保持默认值
-        },
+        fail: () => {},
       });
-    } catch (e) {
-      // API 不可用，保持默认值
+    } catch (e) {}
+  },
+
+  // ==================== 蓝牙管理 ====================
+  _initBLE() {
+    bleManager.on('connected', (data) => {
+      this.setData({ bleState: BLEState.CONNECTED, bleDeviceName: 'ATK-BLE04' });
+      wx.showToast({ title: '蓝牙已连接', icon: 'success', duration: 1500 });
+    });
+    bleManager.on('disconnected', () => {
+      this.setData({ bleState: BLEState.DISCONNECTED, bleDeviceName: '' });
+    });
+    bleManager.on('connecting', () => {
+      this.setData({ bleState: BLEState.CONNECTING });
+    });
+    bleManager.on('scanStart', () => {
+      this.setData({ bleState: BLEState.SCANNING });
+    });
+    bleManager.on('error', () => {
+      this.setData({ bleState: BLEState.ERROR });
+    });
+    bleManager.on('adapterOff', () => {
+      this.setData({ bleState: BLEState.ERROR });
+    });
+
+    // 自动初始化蓝牙适配器
+    bleManager.init();
+  },
+
+  /** 点击连接按钮：扫描并连接 */
+  onBLEScan() {
+    if (this.data.bleState === BLEState.CONNECTED) {
+      // 已连接，断开
+      bleManager.disconnect();
+      return;
+    }
+    if (this.data.bleState === BLEState.SCANNING) {
+      bleManager.stopScan();
+      this.setData({ bleState: BLEState.IDLE });
+      return;
+    }
+    bleManager.init().then((ok) => {
+      if (ok) {
+        bleManager.startScan((device) => {
+          this.setData({ bleDeviceName: device.localName || device.name || 'BLE设备' });
+          bleManager.connect(device.deviceId).catch(() => {
+            wx.showToast({ title: '连接失败，请重试', icon: 'none' });
+          });
+        });
+      }
+    });
+  },
+
+  // ==================== 蓝牙指令发送 ====================
+  /** 移动控制 */
+  _sendDirection(dir) {
+    if (bleManager.state !== BLEState.CONNECTED) return;
+    const cmdMap = {
+      forward: BLECommands.forward,
+      backward: BLECommands.backward,
+      left: BLECommands.left,
+      right: BLECommands.right,
+    };
+    const cmd = cmdMap[dir];
+    if (cmd) {
+      // 先停再发新方向（避免方向叠加）
+      bleManager.sendCommand(BLECommands.stop);
+      setTimeout(() => bleManager.sendCommand(cmd), 30);
+    }
+  },
+
+  _sendStop() {
+    if (bleManager.state !== BLEState.CONNECTED) return;
+    bleManager.sendCommand(BLECommands.stop);
+  },
+
+  /** 收球 */
+  _sendCollect(on) {
+    if (bleManager.state !== BLEState.CONNECTED) return;
+    if (on) {
+      bleManager.sendCommand(BLECommands.collect);
+    } else {
+      bleManager.sendCommand(BLECommands.stopAll);
+    }
+  },
+
+  /** 发球 */
+  _sendServe(on) {
+    if (bleManager.state !== BLEState.CONNECTED) return;
+    if (on) {
+      const { serveSpeedIndex, serveModeIndex } = this.data;
+      const speeds = [BLECommands.speedLow, BLECommands.speedMedium, BLECommands.speedHigh];
+      // 先发速度，再发模式（随机球），再发开始发球
+      const seq = [];
+      seq.push(speeds[serveSpeedIndex] || BLECommands.speedLow);
+      if (serveModeIndex === 1) seq.push(BLECommands.randomBall);
+      seq.push(BLECommands.serve);
+      bleManager.sendSequence(seq.join(''), 50);
+    } else {
+      bleManager.sendCommand(BLECommands.stopAll);
     }
   },
 
@@ -123,7 +226,16 @@ Page({
 
   onJoystickDirection(e) {
     const { direction } = e.detail;
+    const prev = app.globalData.joystickDirection;
     app.setState('joystickDirection', direction);
+
+    // 蓝牙指令
+    if (direction === 'stop' || !direction) {
+      this._sendStop();
+    } else if (direction !== prev && direction !== 'stop') {
+      this._sendDirection(direction);
+    }
+
     this._refreshStatus();
   },
 
@@ -137,6 +249,8 @@ Page({
     });
     app.setState('isCollecting', toggled);
     if (toggled) app.setState('isServing', false);
+
+    this._sendCollect(toggled);
     this._refreshStatus();
   },
 
@@ -146,6 +260,11 @@ Page({
     const mode = index === 0 ? 'directional' : 'random';
     this.setData({ serveModeIndex: index });
     app.setState('serveMode', mode);
+
+    // 如果正在发球，模式变更需重新发送指令
+    if (this.data.isServing) {
+      this._sendServe(true);
+    }
   },
 
   onSpeedChange(e) {
@@ -153,6 +272,11 @@ Page({
     const speeds = ['low', 'medium', 'high'];
     this.setData({ serveSpeedIndex: index });
     app.setState('serveSpeed', speeds[index]);
+
+    // 如果正在发球，速度变更需重新发送指令
+    if (this.data.isServing) {
+      this._sendServe(true);
+    }
     this._refreshStatus();
   },
 
@@ -165,6 +289,8 @@ Page({
     });
     app.setState('isServing', toggled);
     if (toggled) app.setState('isCollecting', false);
+
+    this._sendServe(toggled);
     this._refreshStatus();
   },
 
@@ -180,6 +306,7 @@ Page({
     if (value) {
       app.setState('isCollecting', false);
       app.setState('isServing', false);
+      bleManager.sendCommand(BLECommands.stopAll);
     }
     this._refreshStatus();
   },
@@ -192,10 +319,11 @@ Page({
 
   // ==================== 状态刷新 ====================
   _refreshStatus() {
-    const { isShutdown, isCollecting, isServing, serveSpeedIndex } = this.data;
-    const speeds = ['低速', '中速', '高速'];
-    const speedLabel = speeds[serveSpeedIndex] || '低速';
+    const { isShutdown, isCollecting, isServing, serveSpeedIndex, controlModeIndex } = this.data;
+    const speeds = ['低档', '中档', '高档'];
+    const speedLabel = speeds[serveSpeedIndex] || '低档';
     const modeLabel = this.data.serveModeIndex === 0 ? '定向球' : '随机球';
+    const ctrlLabel = controlModeIndex === 0 ? '手动' : '自动';
 
     if (isShutdown) {
       this.setData({
@@ -209,14 +337,14 @@ Page({
         statusText: '收球中',
         statusType: 'collecting',
         statusPillText: '收球中',
-        statusDescription: '自动回收场地网球',
+        statusDescription: '收球功能：自动回收场地网球',
       });
     } else if (isServing) {
       this.setData({
         statusText: `发球中 · ${speedLabel}`,
         statusType: 'serving',
         statusPillText: '发球中',
-        statusDescription: `${modeLabel} · ${speedLabel}`,
+        statusDescription: `发球功能：${speedLabel}${modeLabel}`,
       });
     } else if (app.globalData.joystickDirection &&
                app.globalData.joystickDirection !== 'stop') {
@@ -231,7 +359,7 @@ Page({
         statusText: '运动中',
         statusType: 'moving',
         statusPillText: '运动中',
-        statusDescription: `正在${dirLabel}`,
+        statusDescription: `${ctrlLabel}：${dirLabel}`,
       });
     } else {
       this.setData({

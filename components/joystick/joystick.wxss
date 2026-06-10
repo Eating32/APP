@@ -8,8 +8,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;         /* 新增：撑满卡片宽度 */
-  height: 360rpx;       /* 新增：高度放大，和图片一致 */
+  width: 100%;
+  max-width: 390rpx;
+  height: auto;
   margin: 0 auto;
 }
 
@@ -61,34 +62,34 @@
 
 /* 上箭头 */
 .joy-tri-up {
-  top: 12%; left: 50%; transform: translateX(-50%);
-  border-left: 16rpx solid transparent;
-  border-right: 16rpx solid transparent;
-  border-bottom: 22rpx solid rgba(61,123,255,0.28);
+  top: 5%; left: 50%; transform: translateX(-50%);
+  border-left: 20rpx solid transparent;
+  border-right: 20rpx solid transparent;
+  border-bottom: 28rpx solid rgba(61,123,255,0.32);
 }
 
 /* 下箭头 */
 .joy-tri-down {
-  bottom: 12%; left: 50%; transform: translateX(-50%);
-  border-left: 16rpx solid transparent;
-  border-right: 16rpx solid transparent;
-  border-top: 22rpx solid rgba(61,123,255,0.28);
+  bottom: 5%; left: 50%; transform: translateX(-50%);
+  border-left: 20rpx solid transparent;
+  border-right: 20rpx solid transparent;
+  border-top: 28rpx solid rgba(61,123,255,0.32);
 }
 
 /* 左箭头 */
 .joy-tri-left {
-  left: 12%; top: 50%; transform: translateY(-50%);
-  border-top: 16rpx solid transparent;
-  border-bottom: 16rpx solid transparent;
-  border-right: 22rpx solid rgba(61,123,255,0.28);
+  left: 5%; top: 50%; transform: translateY(-50%);
+  border-top: 20rpx solid transparent;
+  border-bottom: 20rpx solid transparent;
+  border-right: 28rpx solid rgba(61,123,255,0.32);
 }
 
 /* 右箭头 */
 .joy-tri-right {
-  right: 12%; top: 50%; transform: translateY(-50%);
-  border-top: 16rpx solid transparent;
-  border-bottom: 16rpx solid transparent;
-  border-left: 22rpx solid rgba(61,123,255,0.28);
+  right: 5%; top: 50%; transform: translateY(-50%);
+  border-top: 20rpx solid transparent;
+  border-bottom: 20rpx solid transparent;
+  border-left: 28rpx solid rgba(61,123,255,0.32);
 }
 
 /* ========================================
@@ -102,8 +103,8 @@
 }
 
 .joy-knob {
-  width: 120rpx;
-  height: 120rpx;
+  width: 130rpx;
+  height: 130rpx;
   border-radius: 50%;
   position: relative;
   pointer-events: auto;
@@ -135,9 +136,9 @@
 
 .knob-spark {
   position: absolute;
-  top: 22%; left: 28%;
-  width: 14rpx; height: 14rpx;
+  top: 24%; left: 30%;
+  width: 16rpx; height: 16rpx;
   border-radius: 50%;
-  background: rgba(255,255,255,0.8);
+  background: rgba(255,255,255,0.85);
   filter: blur(2rpx);
 }

@@ -6,22 +6,16 @@
   <!-- ==========================================
        1. Header（右上角为小程序原生胶囊按钮）
        ========================================== -->
-  <!-- 手机状态栏（最顶部） -->
-  <view class="phone-status-bar">
-    <text class="phone-time">{{currentTime}}</text>
-    <view class="phone-battery-wrap">
-      <view class="battery-icon">
-        <view class="battery-fill" style="width: {{phoneBattery}}%;"></view>
-      </view>
-      <text class="battery-percent">{{phoneBattery}}%</text>
-    </view>
-  </view>
-
   <!-- Header -->
   <view class="header">
     <view class="header-left">
       <text class="header-title">Y-Evolution</text>
       <text class="header-subtitle">智能控制，轻松训练</text>
+    </view>
+    <view class="ble-btn {{bleState === 'connected' ? 'ble-connected' : ''}} {{bleState === 'connecting' || bleState === 'scanning' ? 'ble-scanning' : ''}}"
+          bindtap="onBLEScan">
+      <view class="ble-dot"></view>
+      <text class="ble-label">{{bleState === 'connected' ? '已连接' : (bleState === 'connecting' || bleState === 'scanning' ? '搜索中' : '蓝牙')}}</text>
     </view>
   </view>
 
@@ -45,7 +39,7 @@
     <view class="status-pill status-pill-{{statusType}}">
       <text class="status-pill-text">{{statusPillText}}</text>
     </view>
-    <text class="status-desc">设备运动状态</text>
+    <text class="status-desc">{{statusDescription}}</text>
   </view>
 
   <!-- ==========================================
@@ -66,7 +60,7 @@
       />
       <view class="joystick-area">
         <joystick
-          size="{{320}}"
+          size="{{380}}"
           disabled="{{!isPowered || controlModeIndex !== 0}}"
           bind:direction="onJoystickDirection"
         />

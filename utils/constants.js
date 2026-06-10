@@ -77,6 +77,30 @@ const NavItems = [
   { label: '我的', key: 'profile' },
 ];
 
+// BLE 蓝牙配置（ATK-BLE04 模块）
+const BLEConfig = {
+  serviceUUID: '0000FFF0-0000-1000-8000-00805F9B34FB',
+  characteristicWriteUUID: '0000FFF2-0000-1000-8000-00805F9B34FB',  // 手机→设备
+  characteristicNotifyUUID: '0000FFF1-0000-1000-8000-00805F9B34FB', // 设备→手机
+  deviceName: 'ATK-BLE04',  // 扫描时匹配的设备名
+};
+
+// 蓝牙指令码（透传 ASCII 字符）
+const BLECommands = {
+  forward: '1',       // 前进（按下）
+  backward: '4',      // 后退（按下）
+  left: '2',          // 左转（按下）
+  right: '3',         // 右转（按下）
+  stop: '0',          // 松开停止
+  stopAll: '5',       // 关闭所有模式
+  serve: 'E',         // 开启发球模式
+  collect: 'F',       // 开启收球模式
+  speedLow: 'A',      // 低速球
+  speedMedium: 'B',   // 中速球
+  speedHigh: 'C',     // 高速球
+  randomBall: 'D',    // 随机球
+};
+
 module.exports = {
   Colors,
   Sizes,
@@ -84,4 +108,6 @@ module.exports = {
   Shadows,
   DeviceDefaults,
   NavItems,
+  BLEConfig,
+  BLECommands,
 };

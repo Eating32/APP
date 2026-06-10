@@ -19,7 +19,7 @@ Component({
     attached() {
       const s = this.properties.size;
       this._outerRadius = s / 2;
-      this._knobRadius = 60;        // 120rpx / 2，与 CSS 一致
+      this._knobRadius = 65;        // 130rpx / 2，与 CSS 一致
       this._maxTravel = this._outerRadius - this._knobRadius - 12;
       this._threshold = this._maxTravel * 0.30;
     },
