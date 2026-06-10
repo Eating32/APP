@@ -10,30 +10,32 @@
     </view>
   </view>
 
-  <!-- 右侧：设备名称 + 三个信息卡片 -->
+  <!-- 右侧：设备信息白色卡片 -->
   <view class="device-info">
-    <text class="device-name">{{deviceName}}</text>
-    <text class="device-model">{{deviceModel}}</text>
+    <view class="device-info-card">
+      <text class="device-name">{{deviceName}}</text>
+      <text class="device-model">{{deviceModel}}</text>
 
-    <!-- 两个横向信息卡片：电量 / 已用时长 -->
-    <view class="info-cards">
-      <!-- 电量 — 环形进度 -->
-      <view class="info-card">
-        <view class="battery-ring">
-          <view class="ring-track">
-            <view class="ring-fill" style="background: conic-gradient(#25C06D {{battery * 3.6}}deg, #E8ECF4 {{battery * 3.6}}deg);"></view>
-            <view class="ring-center">
-              <text class="ring-value">{{battery}}%</text>
+      <!-- 两个横向信息：电量 / 已用时长 -->
+      <view class="info-row">
+        <!-- 电量 — 环形进度 -->
+        <view class="info-item">
+          <view class="battery-ring">
+            <view class="ring-track">
+              <view class="ring-fill" style="background: conic-gradient(#25C06D {{battery * 3.6}}deg, #E8ECF4 {{battery * 3.6}}deg);"></view>
+              <view class="ring-center">
+                <text class="ring-value">{{battery}}%</text>
+              </view>
             </view>
           </view>
+          <text class="info-label">电量</text>
         </view>
-        <text class="info-card-label">电量</text>
-      </view>
 
-      <!-- 已用时长 -->
-      <view class="info-card">
-        <text class="info-card-value">{{usageTime}}</text>
-        <text class="info-card-label">已用时长</text>
+        <!-- 已用时长 -->
+        <view class="info-item">
+          <text class="info-value">{{usageTime}}</text>
+          <text class="info-label">已用时长</text>
+        </view>
       </view>
     </view>
   </view>

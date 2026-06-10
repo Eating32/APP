@@ -6,14 +6,15 @@
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  padding: 24rpx;
+  padding: 28rpx;
+  padding-left: 20rpx;
   overflow: visible;
 }
 
 /* --- 左侧机器人图片 --- */
 .device-image-wrap {
-  width: 260rpx;
-  height: 300rpx;
+  width: 290rpx;
+  height: 320rpx;
   flex-shrink: 0;
   margin-right: 20rpx;
   position: relative;
@@ -21,6 +22,12 @@
   border-radius: 20rpx;
   overflow: hidden;
   filter: drop-shadow(0 8rpx 20rpx rgba(31, 60, 117, 0.12));
+
+  /* 放大基准点：左上角，方便左右移动 */
+  transform-origin: left center;
+  /* 向左偏移，抵消放大后右移的问题，数值按需微调 */
+  transform: scale(2) translateX(-80rpx);
+
 }
 .device-image {
   width: 100%;
@@ -38,33 +45,50 @@
 .device-info {
   flex: 1;
   display: flex; flex-direction: column; min-width: 0;
+  margin-top: 40rpx;
+  
+}
+
+/* 统一白色小卡片 */
+.device-info-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20rpx;
+  border: 1px solid #E6ECF7;
+  padding: 14rpx 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(60, 100, 200, 0.04);
+  width: 380rpx;
+  min-height: 240rpx; /* 最小高度，内容多自动长高 */
+  box-sizing: border-box; /* 宽高包含 border+padding，不会意外撑大 */
+  flex-shrink: 0; /* 关键：不让这个卡片被左边小车挤窄 */
 }
 .device-name {
   font-size: 36rpx; font-weight: 700; color: #25C06D; margin-bottom: 4rpx;
   font-family: "Microsoft YaHei", sans-serif;
+  display: block;
 }
 .device-model {
-  font-size: 24rpx; color: #7F90AF; margin-bottom: 20rpx;
+  font-size: 24rpx; color: #7F90AF; margin-bottom: 12rpx;
   font-family: "Microsoft YaHei", sans-serif;
+  display: block;
 }
 
-/* --- 三个横向信息卡片 --- */
-.info-cards {
+/* --- 两个横向信息 --- */
+.info-row {
   display: flex; flex-direction: row; gap: 12rpx;
 }
-.info-card {
+.info-item {
   flex: 1;
   display: flex; flex-direction: column; align-items: center;
   justify-content: center; padding: 12rpx 4rpx;
-  border-radius: 16rpx;
+  border-radius: 14rpx;
   background: rgba(245, 248, 255, 0.8);
   border: 1px solid #E6ECF7;
 }
-.info-card-value {
+.info-value {
   font-size: 24rpx; font-weight: 700; color: #1F3C75; margin-bottom: 4rpx;
   font-family: "Microsoft YaHei", sans-serif;
 }
-.info-card-label {
+.info-label {
   font-size: 18rpx; font-weight: 500; color: #8293B5;
   font-family: "Microsoft YaHei", sans-serif;
 }

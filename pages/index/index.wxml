@@ -6,6 +6,18 @@
   <!-- ==========================================
        1. Header（右上角为小程序原生胶囊按钮）
        ========================================== -->
+  <!-- 手机状态栏（最顶部） -->
+  <view class="phone-status-bar">
+    <text class="phone-time">{{currentTime}}</text>
+    <view class="phone-battery-wrap">
+      <view class="battery-icon">
+        <view class="battery-fill" style="width: {{phoneBattery}}%;"></view>
+      </view>
+      <text class="battery-percent">{{phoneBattery}}%</text>
+    </view>
+  </view>
+
+  <!-- Header -->
   <view class="header">
     <view class="header-left">
       <text class="header-title">Y-Evolution</text>
@@ -16,7 +28,7 @@
   <!-- ==========================================
        2. 设备信息卡片
        ========================================== -->
-  <view class="device-card-wrapper" style="margin-bottom: 16rpx;">
+  <view class="device-card-wrapper" style="margin-bottom: 8rpx;">
     <device-card
       deviceName="{{deviceName}}"
       deviceModel="{{deviceModel}}"
@@ -28,7 +40,7 @@
   <!-- ==========================================
        3. 当前状态卡片
        ========================================== -->
-  <view class="status-card glass-card" style="margin-bottom: 16rpx;">
+  <view class="status-card glass-card" style="margin-bottom: 8rpx;">
     <text class="status-label">当前状态</text>
     <view class="status-pill status-pill-{{statusType}}">
       <text class="status-pill-text">{{statusPillText}}</text>
@@ -39,7 +51,7 @@
   <!-- ==========================================
        4. 主功能区 (双列 58% : 42%)
        ========================================== -->
-  <view class="main-area" style="margin-bottom: 16rpx;">
+  <view class="main-area" style="margin-bottom: 8rpx;">
     <!-- ========== 左列 58%：移动控制 ========== -->
     <view class="left-column glass-card">
       <view class="column-header">
@@ -110,7 +122,7 @@
   <!-- ==========================================
        5. 总关闭模块
        ========================================== -->
-  <view class="shutdown-card glass-card" style="margin-bottom: 16rpx;">
+  <view class="shutdown-card glass-card" style="margin-bottom: 8rpx;">
     <view class="shutdown-info">
       <text class="shutdown-title">关闭发球和收球功能</text>
       <text class="shutdown-subtitle">关闭后将停止发球和收球功能</text>

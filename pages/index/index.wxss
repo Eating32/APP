@@ -16,8 +16,40 @@
 /* ========================================
    1. Header
    ======================================== */
+/* 手机状态栏 — 固定在页面最顶部 */
+.phone-status-bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; flex-direction: row; justify-content: space-between;
+  align-items: center;
+  padding: 6rpx 24rpx;
+  padding-top: calc(6rpx + env(safe-area-inset-top));
+  background: rgba(244, 248, 255, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.phone-time {
+  font-size: 26rpx; font-weight: 600; color: #1F3C75;
+  font-family: "Microsoft YaHei", sans-serif;
+}
+.phone-battery-wrap {
+  display: flex; flex-direction: row; align-items: center; gap: 8rpx;
+}
+.battery-icon {
+  width: 44rpx; height: 22rpx; border-radius: 6rpx;
+  border: 2rpx solid #1F3C75; padding: 2rpx;
+  display: flex; align-items: center;
+}
+.battery-fill {
+  height: 100%; border-radius: 3rpx;
+  background: #25C06D;
+  transition: width 0.3s ease;
+}
+.battery-percent {
+  font-size: 22rpx; font-weight: 600; color: #1F3C75;
+  font-family: "Microsoft YaHei", sans-serif;
+}
+
 .header {
-  height: 120rpx;
   display: flex; flex-direction: row; justify-content: flex-start;
   align-items: flex-start; padding: 0 8rpx; padding-top: 4rpx;
 }
@@ -35,24 +67,29 @@
 /* ========================================
    2. 设备卡片（高度 260rpx，由组件控制）
    ======================================== */
-.device-card-wrapper { overflow: visible; margin-top: 8rpx; }
+.device-card-wrapper { overflow: visible; margin-top: 4rpx; }
 
 /* ========================================
    3. 当前状态卡片（~120rpx）
    ======================================== */
 .status-card {
   width: 100%;
-  display: flex; flex-direction: row; align-items: center; justify-content: space-between;
-  padding: 28rpx 28rpx;
+  display: flex; 
+  flex-direction: row; 
+  align-items: center; 
+  justify-content: space-between;
+  padding: 24rpx 28rpx;
+  height: 120rpx;
+  transform: translateY(-22rpx);
 }
 .status-label {
-  font-size: 24rpx; font-weight: 700; color: #1F3C75;
+  font-size: 28rpx; font-weight: 700; color: #1F3C75;
   font-family: "Microsoft YaHei", sans-serif;
 }
 .status-pill { padding: 8rpx 24rpx; border-radius: 40rpx; }
-.status-pill-text { font-size: 24rpx; font-weight: 700; font-family: "Microsoft YaHei", sans-serif; }
+.status-pill-text { font-size: 26rpx; font-weight: 700; font-family: "Microsoft YaHei", sans-serif; }
 .status-desc {
-  font-size: 22rpx; color: #8293B5; font-weight: 500;
+  font-size: 26rpx; color: #8293B5; font-weight: 500;
   font-family: "Microsoft YaHei", sans-serif;
 }
 .status-pill-idle { background: #E9F9EF; }
@@ -69,31 +106,39 @@
 /* ========================================
    4. 主功能区：左右双栏 58% : 42%
    ======================================== */
-.main-area { display: flex; flex-direction: row; gap: 16rpx; }
+.main-area { 
+  display: flex; 
+  flex-direction: row; 
+  gap: 18rpx; 
+  position: relative;
+  top: -8rpx; }
 
 /* --- 左列 58%：移动控制 ~420rpx --- */
 .left-column {
   width: 58%;
   display: flex; flex-direction: column;
-  padding: 24rpx 20rpx;
+  padding: 16rpx 20rpx;
   flex: 1;
 }
 .right-column {
   width: 42%;
-  display: flex; flex-direction: column; gap: 12rpx;
+  display: flex; 
+  flex-direction: column; 
+  gap: 20rpx;
+  
 }
 .right-column > .glass-card { flex: 1; }
 
-.column-header { display: flex; flex-direction: column; margin-bottom: 8rpx; }
+.column-header { display: flex; flex-direction: column; margin-bottom: 6rpx; }
 .column-title {
-  font-size: 28rpx; font-weight: 700; color: #1F3C75; margin-bottom: 4rpx;
+  font-size: 28rpx; font-weight: 700; color: #1F3C75; margin-bottom: 2rpx;
   font-family: "Microsoft YaHei", sans-serif;
 }
 .column-subtitle {
   font-size: 22rpx; color: #8293B5; font-weight: 500;
   font-family: "Microsoft YaHei", sans-serif;
 }
-.segment-wrap { margin-bottom: 10rpx; }
+.segment-wrap { margin-bottom: 6rpx; }
 
 /* 摇杆区域 */
 .joystick-area {
@@ -105,22 +150,22 @@
 /* --- 收球功能 --- */
 .func-section-collect {
   display: flex; flex-direction: column;
-  padding: 24rpx;
+  padding: 28rpx;
 }
-.func-section-collect .column-header { margin-bottom: 16rpx; }
+.func-section-collect .column-header { margin-bottom: 14rpx; }
 
 /* --- 发球功能 --- */
 .func-section-serve {
   display: flex; flex-direction: column;
-  padding: 24rpx;
+  padding: 28rpx;
 }
-.func-section-serve .column-header { margin-bottom: 8rpx; }
-.func-section-serve .segment-wrap { margin-bottom: 10rpx; }
+.func-section-serve .column-header { margin-bottom: 6rpx; }
+.func-section-serve .segment-wrap { margin-bottom: 8rpx; }
 
 /* 统一主按钮 */
 .func-btn, .func-btn-serve {
   width: 100%;
-  height: 64rpx;
+  height: 72rpx;
   margin-top: 0;
   border-radius: 999rpx;
   background: linear-gradient(135deg, #4A8CFF, #2F66FF);
@@ -130,7 +175,7 @@
   display: flex; justify-content: center; align-items: center;
 }
 .func-btn text, .func-btn-serve text {
-  font-size: 28rpx; font-weight: 600; color: #fff;
+  font-size: 32rpx; font-weight: 600; color: #fff;
   font-family: "Microsoft YaHei", sans-serif;
 }
 .btn-active-state {
@@ -141,14 +186,14 @@
 .btn-primary-press { transform: scale(0.97); }
 
 /* 档位 */
-.speed-row { display: flex; flex-direction: row; gap: 10rpx; margin: 10rpx 0; }
+.speed-row { display: flex; flex-direction: row; gap: 10rpx; margin: 30rpx 0; }
 .speed-btn {
-  flex: 1; height: 54rpx; border-radius: 999rpx;
+  flex: 1; height: 58rpx; border-radius: 999rpx;
   background: #EDF1F6;
   display: flex; justify-content: center; align-items: center;
 }
 .speed-btn-text {
-  font-size: 24rpx; font-weight: 600; color: #8293B5;
+  font-size: 26rpx; font-weight: 600; color: #8293B5;
   font-family: "Microsoft YaHei", sans-serif;
 }
 .speed-active {
@@ -163,7 +208,8 @@
 .shutdown-card {
   width: 100%;
   display: flex; flex-direction: row; align-items: center;
-  justify-content: space-between; padding: 24rpx 28rpx;
+  justify-content: space-between; padding: 20rpx 28rpx;
+  margin-top: 15rpx
 }
 .shutdown-info { flex: 1; display: flex; flex-direction: column; min-width: 0; }
 .shutdown-title {
@@ -179,4 +225,4 @@
 /* ========================================
    紧凑底部
    ======================================== */
-.bottom-spacer { height: 60rpx; }
+.bottom-spacer { height: 30rpx; }
