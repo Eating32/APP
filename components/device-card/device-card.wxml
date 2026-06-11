@@ -1,4 +1,4 @@
-<!-- 设备信息卡片 — 统一白色容器 -->
+<!-- 设备信息卡片 — 动态连接状态 -->
 <view class="device-card glass-card">
   <!-- 左侧：机器人图片 -->
   <view class="device-image-wrap">
@@ -12,13 +12,12 @@
 
   <!-- 右侧：设备信息白色卡片 -->
   <view class="device-info">
-    <view class="device-info-card">
-      <text class="device-name">{{deviceName}}</text>
+    <view class="device-info-card {{connected ? '' : 'card-disconnected'}}">
+      <text class="device-name {{connected ? '' : 'disconnected'}}">{{deviceName}}</text>
       <text class="device-model">{{deviceModel}}</text>
 
-      <!-- 两个横向信息：电量 / 已用时长 -->
-      <view class="info-row">
-        <!-- 电量 — 环形进度 -->
+      <!-- 电量 / 已用时长 — 仅连接时显示 -->
+      <view class="info-row" wx:if="{{connected}}">
         <view class="info-item">
           <view class="battery-ring">
             <view class="ring-track">
@@ -31,7 +30,6 @@
           <text class="info-label">电量</text>
         </view>
 
-        <!-- 已用时长 -->
         <view class="info-item">
           <text class="info-value">{{usageTime}}</text>
           <text class="info-label">已用时长</text>

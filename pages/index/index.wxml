@@ -28,6 +28,7 @@
       deviceModel="{{deviceModel}}"
       battery="{{battery}}"
       usageTime="{{usageTime}}"
+      connected="{{deviceConnected}}"
     />
   </view>
 
@@ -45,7 +46,7 @@
   <!-- ==========================================
        4. 主功能区 (双列 58% : 42%)
        ========================================== -->
-  <view class="main-area" style="margin-bottom: 8rpx;">
+  <view class="main-area {{deviceConnected ? '' : 'area-disabled'}}" style="margin-bottom: 8rpx;">
     <!-- ========== 左列 58%：移动控制 ========== -->
     <view class="left-column glass-card">
       <view class="column-header">
@@ -118,7 +119,7 @@
   <!-- ==========================================
        5. 总关闭模块
        ========================================== -->
-  <view class="shutdown-card glass-card" style="margin-bottom: 8rpx;">
+  <view class="shutdown-card glass-card {{deviceConnected ? '' : 'area-disabled'}}" style="margin-bottom: 8rpx;">
     <view class="shutdown-info">
       <text class="shutdown-title">关闭发球和收球功能</text>
       <text class="shutdown-subtitle">关闭后将停止发球和收球功能</text>

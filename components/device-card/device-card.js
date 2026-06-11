@@ -7,6 +7,7 @@ Component({
     deviceModel: { type: String, value: 'ELF Tennis Robot' },
     battery: { type: Number, value: 85 },
     usageTime: { type: String, value: '2h 36min' },
+    connected: { type: Boolean, value: false },
   },
 
   data: {

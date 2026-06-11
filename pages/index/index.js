@@ -16,11 +16,14 @@ Page({
     activeNav: 'control',
 
     // 设备信息
-    deviceName: '设备已连接',
+    deviceName: '设备未连接',
     deviceModel: 'ELF Tennis Robot',
     battery: 85,
     usageTime: '2h 36min',
     statusText: '待机中',
+
+    // 蓝牙连接驱动
+    deviceConnected: false,
 
     // 状态胶囊
     statusType: 'idle',
@@ -45,7 +48,7 @@ Page({
 
     // 总开关
     isShutdown: false,
-    isPowered: true,
+    isPowered: false,
 
     // 蓝牙状态
     bleState: BLEState.IDLE,
@@ -73,6 +76,17 @@ Page({
   onShow() {
     this._updateTime();
     this._fetchPhoneBattery();
+    // 页面显示时同步蓝牙状态
+    const connected = bleManager.state === BLEState.CONNECTED;
+    this.setData({
+      bleState: bleManager.state,
+      deviceConnected: connected,
+      isPowered: connected,
+      deviceName: connected ? '设备已连接' : '设备未连接',
+    });
+    if (this.data.controlModeIndex === 1 && connected) {
+      this._startGyro();
+    }
   },
 
   onHide() {
@@ -171,11 +185,26 @@ Page({
   // ==================== 蓝牙管理 ====================
   _initBLE() {
     bleManager.on('connected', (data) => {
-      this.setData({ bleState: BLEState.CONNECTED, bleDeviceName: 'ATK-BLE04' });
+      this.setData({
+        bleState: BLEState.CONNECTED,
+        bleDeviceName: 'ATK-BLE04',
+        deviceName: '设备已连接',
+        deviceConnected: true,
+        isPowered: true,
+      });
       wx.showToast({ title: '蓝牙已连接', icon: 'success', duration: 1500 });
     });
     bleManager.on('disconnected', () => {
-      this.setData({ bleState: BLEState.DISCONNECTED, bleDeviceName: '' });
+      this.setData({
+        bleState: BLEState.DISCONNECTED,
+        bleDeviceName: '',
+        deviceName: '设备未连接',
+        deviceConnected: false,
+        isPowered: false,
+        isShutdown: false,
+        isCollecting: false,
+        isServing: false,
+      });
     });
     bleManager.on('connecting', () => {
       this.setData({ bleState: BLEState.CONNECTING });
@@ -184,10 +213,20 @@ Page({
       this.setData({ bleState: BLEState.SCANNING });
     });
     bleManager.on('error', () => {
-      this.setData({ bleState: BLEState.ERROR });
+      this.setData({
+        bleState: BLEState.ERROR,
+        deviceName: '设备未连接',
+        deviceConnected: false,
+        isPowered: false,
+      });
     });
     bleManager.on('adapterOff', () => {
-      this.setData({ bleState: BLEState.ERROR });
+      this.setData({
+        bleState: BLEState.ADAPTER_OFF,
+        deviceName: '设备未连接',
+        deviceConnected: false,
+        isPowered: false,
+      });
     });
 
     // 自动初始化蓝牙适配器

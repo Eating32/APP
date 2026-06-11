@@ -65,11 +65,19 @@
   font-size: 36rpx; font-weight: 700; color: #25C06D; margin-bottom: 4rpx;
   font-family: "Microsoft YaHei", sans-serif;
   display: block;
+  transition: color 0.3s ease;
+}
+.device-name.disconnected {
+  color: #8293B5;
 }
 .device-model {
   font-size: 24rpx; color: #7F90AF; margin-bottom: 12rpx;
   font-family: "Microsoft YaHei", sans-serif;
   display: block;
+}
+/* 未连接时卡片微调 */
+.device-info-card.card-disconnected {
+  min-height: auto;
 }
 
 /* --- 两个横向信息 --- */
