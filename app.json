@@ -9,5 +9,10 @@
   },
   "usingComponents": {},
   "style": "v2",
-  "sitemapLocation": "sitemap.json"
+  "sitemapLocation": "sitemap.json",
+  "permission": {
+    "scope.bluetooth": {
+      "desc": "用于连接网球机器人进行控制"
+    }
+  }
 }
