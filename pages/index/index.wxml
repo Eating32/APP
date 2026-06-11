@@ -13,7 +13,7 @@
       <text class="header-subtitle">智能控制，轻松训练</text>
     </view>
     <view class="ble-btn {{bleState === 'connected' ? 'ble-connected' : ''}} {{bleState === 'connecting' || bleState === 'scanning' ? 'ble-scanning' : ''}}"
-          bindtap="onBLEScan">
+          bindtap="onBLETap">
       <view class="ble-dot"></view>
       <text class="ble-label">{{bleState === 'connected' ? '已连接' : (bleState === 'connecting' || bleState === 'scanning' ? '搜索中' : '蓝牙')}}</text>
     </view>

@@ -1,0 +1,106 @@
+<!-- 蓝牙连接页面 · Apple 风格 -->
+<view class="page-container">
+  <!-- 顶部导航栏 -->
+  <view class="ble-nav">
+    <view class="nav-back" bindtap="onBack">
+      <text class="nav-back-icon">←</text>
+      <text class="nav-back-text">返回</text>
+    </view>
+    <text class="nav-title">蓝牙连接</text>
+    <view class="nav-placeholder"></view>
+  </view>
+
+  <!-- 蓝牙开关 -->
+  <view class="glass-card ble-switch-card">
+    <view class="switch-left">
+      <text class="switch-title">蓝牙</text>
+      <text class="switch-subtitle">{{adapterAvailable ? '蓝牙已开启' : '蓝牙已关闭'}}</text>
+    </view>
+    <switch checked="{{adapterAvailable}}" bindchange="onAdapterToggle" color="#3D7BFF" />
+  </view>
+
+  <!-- 已连接设备卡片 -->
+  <view class="glass-card connected-card" wx:if="{{bleState === 'connected'}}">
+    <view class="connected-header">
+      <view class="connected-dot"></view>
+      <text class="connected-label">已连接</text>
+    </view>
+    <view class="connected-info">
+      <view class="connected-row">
+        <text class="connected-key">设备名称</text>
+        <text class="connected-val">{{connectedDevice.name}}</text>
+      </view>
+      <view class="connected-row">
+        <text class="connected-key">信号强度</text>
+        <text class="connected-val">{{connectedDevice.rssi}} dBm</text>
+      </view>
+      <view class="connected-row">
+        <text class="connected-key">MAC 地址</text>
+        <text class="connected-val connected-id">{{connectedDevice.deviceId}}</text>
+      </view>
+      <view class="connected-row">
+        <text class="connected-key">固件版本</text>
+        <text class="connected-val">ATK-BLE04 V1.0</text>
+      </view>
+    </view>
+    <view class="connected-actions">
+      <view class="action-btn action-disconnect" bindtap="onDisconnect">
+        <text>断开连接</text>
+      </view>
+      <view class="action-btn action-forget" bindtap="onForgetDevice">
+        <text>忘记设备</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 连接中状态 -->
+  <view class="glass-card connecting-card" wx:if="{{bleState === 'connecting'}}">
+    <view class="connecting-wrap">
+      <view class="connecting-spinner"></view>
+      <text class="connecting-text">正在连接...</text>
+    </view>
+  </view>
+
+  <!-- 扫描区域 -->
+  <view class="scan-section" wx:if="{{bleState !== 'connected'}}">
+    <view class="glass-card scan-card" bindtap="onScanToggle">
+      <view class="scan-btn {{bleState === 'scanning' ? 'scanning' : ''}}">
+        <text class="scan-btn-text">{{bleState === 'scanning' ? '扫描中...' : '开始扫描'}}</text>
+      </view>
+    </view>
+
+    <!-- 设备列表 -->
+    <view class="device-list" wx:if="{{devices.length > 0}}">
+      <text class="list-title">附近设备</text>
+      <view class="glass-card device-item {{bleState === 'connecting' && connectingDeviceId === item.deviceId ? 'item-connecting' : ''}}"
+            wx:for="{{devices}}" wx:key="deviceId"
+            data-device="{{item}}"
+            bindtap="onDeviceTap">
+        <view class="device-info">
+          <text class="device-name">{{item.name}}</text>
+          <view class="device-rssi">
+            <view class="rssi-bars">
+              <view class="rssi-bar {{item.RSSI > -60 ? 'active' : ''}}"></view>
+              <view class="rssi-bar {{item.RSSI > -70 ? 'active' : ''}}"></view>
+              <view class="rssi-bar {{item.RSSI > -80 ? 'active' : ''}}"></view>
+              <view class="rssi-bar {{item.RSSI > -90 ? 'active' : ''}}"></view>
+            </view>
+            <text class="rssi-text">{{item.RSSI}} dBm</text>
+          </view>
+        </view>
+        <view class="device-connect-btn {{bleState === 'connecting' && connectingDeviceId === item.deviceId ? 'connecting' : ''}}">
+          <text>{{bleState === 'connecting' && connectingDeviceId === item.deviceId ? '...' : '连接'}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{devices.length === 0 && bleState !== 'scanning' && bleState !== 'connecting'}}">
+      <text class="empty-title">未发现设备</text>
+      <text class="empty-desc">请确认设备已开启并靠近手机</text>
+    </view>
+  </view>
+
+  <!-- 底部留白 -->
+  <view class="bottom-spacer"></view>
+</view>

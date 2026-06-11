@@ -142,28 +142,9 @@ Page({
     bleManager.init();
   },
 
-  /** 点击连接按钮：扫描并连接 */
-  onBLEScan() {
-    if (this.data.bleState === BLEState.CONNECTED) {
-      // 已连接，断开
-      bleManager.disconnect();
-      return;
-    }
-    if (this.data.bleState === BLEState.SCANNING) {
-      bleManager.stopScan();
-      this.setData({ bleState: BLEState.IDLE });
-      return;
-    }
-    bleManager.init().then((ok) => {
-      if (ok) {
-        bleManager.startScan((device) => {
-          this.setData({ bleDeviceName: device.localName || device.name || 'BLE设备' });
-          bleManager.connect(device.deviceId).catch(() => {
-            wx.showToast({ title: '连接失败，请重试', icon: 'none' });
-          });
-        });
-      }
-    });
+  /** 点击蓝牙按钮 → 跳转到蓝牙连接页面 */
+  onBLETap() {
+    wx.navigateTo({ url: '/pages/ble/ble' });
   },
 
   // ==================== 蓝牙指令发送 ====================
