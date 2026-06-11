@@ -30,6 +30,8 @@ Page({
     // 移动控制
     controlModes: ['手动控制', '自动控制'],
     controlModeIndex: 0,
+    autoKnobX: 0,       // 自动模式下水平仪驱动的摇杆 X
+    autoKnobY: 0,       // 自动模式下水平仪驱动的摇杆 Y
 
     // 收球
     isCollecting: false,
@@ -75,10 +77,12 @@ Page({
 
   onHide() {
     this._clearTimer();
+    this._stopGyro();
   },
 
   onUnload() {
     this._clearTimer();
+    this._stopGyro();
     bleManager.close();
   },
 
@@ -114,6 +118,54 @@ Page({
         fail: () => {},
       });
     } catch (e) {}
+  },
+
+  // ==================== 水平仪自动控制 ====================
+  /** 启动加速度计监听 */
+  _startGyro() {
+    // 先停止旧的
+    this._stopGyro();
+
+    // 计算最大偏移量（与摇杆组件一致）
+    const size = 380;
+    const outerRadius = size / 2;
+    const knobRadius = 65;
+    const maxTravel = outerRadius - knobRadius - 12;
+
+    wx.startAccelerometer({ interval: 'game' });
+    this._gyroListener = (res) => {
+      // x: 左右倾斜, y: 前后倾斜, z: 垂直
+      // 取反使倾斜方向与小车移动方向一致
+      let ax = -res.x;
+      let ay = res.y;
+
+      // 死区：±0.05g 以内视为水平
+      const deadZone = 0.08;
+      if (Math.abs(ax) < deadZone) ax = 0;
+      if (Math.abs(ay) < deadZone) ay = 0;
+
+      // 映射到摇杆偏移范围 (-maxTravel ~ +maxTravel)
+      // 加速度值范围约 -0.5 到 +0.5（正常手持倾斜）
+      const scale = maxTravel / 0.45;
+      let knobX = ax * scale;
+      let knobY = ay * scale;
+
+      // 钳位
+      knobX = Math.max(-maxTravel, Math.min(maxTravel, knobX));
+      knobY = Math.max(-maxTravel, Math.min(maxTravel, knobY));
+
+      this.setData({ autoKnobX: Math.round(knobX), autoKnobY: Math.round(knobY) });
+    };
+
+    wx.onAccelerometerChange(this._gyroListener);
+  },
+
+  _stopGyro() {
+    if (this._gyroListener) {
+      wx.offAccelerometerChange(this._gyroListener);
+      this._gyroListener = null;
+    }
+    try { wx.stopAccelerometer(); } catch (e) {}
   },
 
   // ==================== 蓝牙管理 ====================
@@ -203,6 +255,16 @@ Page({
     const mode = index === 0 ? 'manual' : 'auto';
     this.setData({ controlModeIndex: index });
     app.setState('controlMode', mode);
+
+    if (index === 1) {
+      // 切换到自动控制 → 启动水平仪
+      this._startGyro();
+    } else {
+      // 切换到手动控制 → 关闭水平仪
+      this._stopGyro();
+      this.setData({ autoKnobX: 0, autoKnobY: 0 });
+    }
+    this._refreshStatus();
   },
 
   onJoystickDirection(e) {
@@ -296,6 +358,10 @@ Page({
   onNavChange(e) {
     const { key } = e.detail;
     this.setData({ activeNav: key });
+    // "状态" 标签 → 跳转到蓝牙连接页面
+    if (key === 'status') {
+      wx.navigateTo({ url: '/pages/ble/ble' });
+    }
   },
 
   // ==================== 状态刷新 ====================

@@ -62,6 +62,8 @@
         <joystick
           size="{{380}}"
           disabled="{{!isPowered || controlModeIndex !== 0}}"
+          autoX="{{autoKnobX}}"
+          autoY="{{autoKnobY}}"
           bind:direction="onJoystickDirection"
         />
       </view>
